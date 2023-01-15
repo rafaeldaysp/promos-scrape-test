@@ -137,7 +137,7 @@ def main():
                 url[notebook] = values[i][3]
                 values = scraping(values, notebooks, url, i - 1)
                 print(f'{values[i][0]}: {values[i][1]}')
-                row = 'Notebooks Amazon!B' + str(3+i) + ':K' + str(3+i)
+                row = 'Notebooks Amazon!B' + str(3+i) + ':F' + str(3+i)
                 print(row)
                 sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                         range=row, valueInputOption="USER_ENTERED",
