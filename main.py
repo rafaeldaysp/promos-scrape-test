@@ -149,7 +149,7 @@ def main():
                     sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                             range=row, valueInputOption="USER_ENTERED",
                                             body={'values': [values[i][:-5]]}).execute()
-                    
+                    time.sleep(1)
                 except Exception as e:
                     print(e)
             
