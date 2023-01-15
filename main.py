@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os.path
+import os
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -13,7 +14,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1S0FRNJoXLwKUbat35EagzmCuTCFdz89OTfNVDBP1Ovk'
-SAMPLE_RANGE_NAME = 'Página1!B3:K60'
+SAMPLE_RANGE_NAME = 'Notebooks Amazon!B3:K60'
 
 import requests
 from bs4 import BeautifulSoup
@@ -43,11 +44,13 @@ def criador_de_post(dados, op=0):
                'link': dados[3],
                'comment': dados[8]}
     message = ''
-    if op == 1:
-        message += '⭐️ VOLTOU O ESTOQUE! ⭐️\n\n'
-    elif op == 2:
-        message += '⭐️ ABAIXOU! ⭐️\n\n'
-    elif dados[5] != '-':
+    
+    if dados[5] == '-':
+        if op == 1:
+            message += '⭐️ VOLTOU O ESTOQUE! ⭐️\n\n'
+        elif op == 2:
+            message += '⭐️ ABAIXOU! ⭐️\n\n'
+    else:
         message += '⭐️ ' + dados[5] + ' ⭐️\n\n'
     message += '🔥 ' + dados[6] + ' 🔥' + '\n\n🔴 ' + dados[7] + ' 🔴' + '\n\n💸 R$ ' + dados[1] + ' (Em 10x Sem Juros)' + '\n\n🔗 ' + dados[3] + '\n\n'
     if dados[8] != '-':
@@ -131,7 +134,7 @@ def main():
                 url[notebook] = values[i][3]
                 scraping(values, notebooks, url, i - 1)
                 print(f'{values[i][0]}: {values[i][1]}')
-                row = 'Página1!B' + str(3+i) + ':K' + str(3+i)
+                row = 'Notebooks Amazon!B' + str(3+i) + ':K' + str(3+i)
                 print(row)
                 sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                         range=row, valueInputOption="USER_ENTERED",
@@ -143,4 +146,5 @@ def main():
 
 
 if __name__ == '__main__':
+    
     main()
