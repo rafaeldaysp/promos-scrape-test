@@ -94,7 +94,7 @@ def scraping(values, notebooks, url, i):
             values[i+1][1] = price
             values[i+1][4] = 'Sim'
     except Exception as e:
-        print(e)
+        print('Acesso bloqueado pela Amazon em ' + notebooks[i])
     return values
     
 
@@ -146,7 +146,6 @@ def main():
                     values = scraping(values, notebooks, url, i - 1)
                     print(f'{values[i][0]}: {values[i][1]}')
                     row = 'Notebooks Amazon!B' + str(3+i) + ':F' + str(3+i)
-                    print(row)
                     sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                             range=row, valueInputOption="USER_ENTERED",
                                             body={'values': [values[i][:-5]]}).execute()
@@ -156,7 +155,9 @@ def main():
         except HttpError as err:
             print(err)
         
+        print('Timeout 5 min...')
         time.sleep(300)
+        
 
 
 if __name__ == '__main__':
