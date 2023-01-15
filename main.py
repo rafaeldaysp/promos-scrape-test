@@ -95,7 +95,6 @@ def scraping(values, notebooks, url, i):
             values[i+1][4] = 'Sim'
     except Exception as e:
         print(e)
-        print(site.text)
         scraping(values, notebooks, url, i)
     return values
     
