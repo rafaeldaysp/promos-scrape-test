@@ -28,10 +28,7 @@ import teste4
 
 #notebooks =['helios', 'strix', 'nitro_3060_r5']
 
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
-    'Accept-Language': 'en-US, en;q=0.5'
-}
+
 
 def criador_de_post(dados, op=0):
     print('Criando o post...')
@@ -63,7 +60,10 @@ def criador_de_post(dados, op=0):
     
 
 def scraping(values, notebooks, url, i):
-
+    headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
+                'Accept-Language': 'en-US, en;q=0.5'
+    }
     try:
         response = requests.get(url[notebooks[i]], headers=headers)
         site = BeautifulSoup(response.text, 'html.parser')
@@ -95,7 +95,8 @@ def scraping(values, notebooks, url, i):
             values[i+1][4] = 'Sim'
     except Exception as e:
         print(e)
-        print(url[notebooks[i]])
+        print(site.text)
+        scraping(values, notebooks, url, i)
     return values
     
 
@@ -121,6 +122,8 @@ def main():
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
+    
+    
     while True:
         notebooks = []
         url = {}
