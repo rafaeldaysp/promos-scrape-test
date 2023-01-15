@@ -141,7 +141,7 @@ def main():
                 print(row)
                 sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                         range=row, valueInputOption="USER_ENTERED",
-                                        body={'values': [values[i]]}).execute()
+                                        body={'values': [values[i][:-5]]}).execute()
                 time.sleep(1)
             
         except HttpError as err:
