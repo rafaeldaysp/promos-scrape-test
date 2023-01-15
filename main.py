@@ -92,6 +92,8 @@ def scraping(values, notebooks, url, i):
     except:
         pass
     
+    return values
+    
 
 
 def main():
@@ -132,7 +134,7 @@ def main():
                 notebook = values[i][0]
                 notebooks.append(notebook)
                 url[notebook] = values[i][3]
-                scraping(values, notebooks, url, i - 1)
+                values = scraping(values, notebooks, url, i - 1)
                 print(f'{values[i][0]}: {values[i][1]}')
                 row = 'Notebooks Amazon!B' + str(3+i) + ':K' + str(3+i)
                 print(row)
