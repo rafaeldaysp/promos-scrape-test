@@ -89,8 +89,8 @@ def scraping(values, notebooks, url, i):
                 criador_de_post(values[i+1], 2) # abaixou
             values[i+1][1] = price
             values[i+1][4] = 'Sim'
-    except:
-        pass
+    except Exception as e:
+        print(e)
     
     return values
     
