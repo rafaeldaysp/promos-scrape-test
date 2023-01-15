@@ -88,6 +88,9 @@ def scraping(values, notebooks, url, i):
             elif preco_atual < preco_antigo < int(values[i+1][9]):
                 values[i+1][1] = price
                 criador_de_post(values[i+1], 2) # abaixou
+            elif preco_atual < int(values[i+1][9]) < preco_antigo:
+                values[i+1][1] = price
+                criador_de_post(values[i+1]) # preço bom
             values[i+1][1] = price
             values[i+1][4] = 'Sim'
     except Exception as e:
@@ -132,17 +135,24 @@ def main():
             values = result.get('values', [])
             
             for i in range (1, len(values)):
-                notebook = values[i][0]
-                notebooks.append(notebook)
-                url[notebook] = values[i][3]
-                values = scraping(values, notebooks, url, i - 1)
-                print(f'{values[i][0]}: {values[i][1]}')
-                row = 'Notebooks Amazon!B' + str(3+i) + ':F' + str(3+i)
-                print(row)
-                sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                                        range=row, valueInputOption="USER_ENTERED",
-                                        body={'values': [values[i][:-5]]}).execute()
-                time.sleep(1)
+                try:
+                    result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+                                        range=SAMPLE_RANGE_NAME).execute()
+                    values = result.get('values', [])
+                    notebook = values[i][0]
+                    notebooks.append(notebook)
+                    url[notebook] = values[i][3]
+                    values = scraping(values, notebooks, url, i - 1)
+                    print(f'{values[i][0]}: {values[i][1]}')
+                    row = 'Notebooks Amazon!B' + str(3+i) + ':F' + str(3+i)
+                    print(row)
+                    sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+                                            range=row, valueInputOption="USER_ENTERED",
+                                            body={'values': [values[i][:-5]]}).execute()
+                    time.sleep(1)
+                    
+                except Exception as e:
+                    print(e)
             
         except HttpError as err:
             print(err)
