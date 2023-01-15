@@ -95,7 +95,6 @@ def scraping(values, notebooks, url, i):
             values[i+1][4] = 'Sim'
     except Exception as e:
         print(e)
-        scraping(values, notebooks, url, i)
     return values
     
 
@@ -151,12 +150,13 @@ def main():
                     sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                             range=row, valueInputOption="USER_ENTERED",
                                             body={'values': [values[i][:-5]]}).execute()
-                    time.sleep(1)
                 except Exception as e:
                     print(e)
             
         except HttpError as err:
             print(err)
+        
+        time.sleep(300)
 
 
 if __name__ == '__main__':
