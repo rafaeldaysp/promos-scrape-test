@@ -97,7 +97,7 @@ def scraping(values, notebooks, url, i):
             values[i+1][1] = price
             values[i+1][4] = 'Sim'
     except Exception as e:
-        print('Acesso bloqueado pela Amazon em ' + notebooks)
+        print('Acesso bloqueado pela Amazon em ' + notebooks[i])
     return values
     
 
@@ -158,8 +158,8 @@ def main():
         except HttpError as err:
             print(err)
         
-        print('Timeout 5 min...')
-        time.sleep(60)
+        print('Timeout...')
+        time.sleep(1)
         
 
 
