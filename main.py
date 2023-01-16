@@ -61,7 +61,7 @@ def criador_de_post(dados, op=0):
 
 def scraping(values, notebooks, url, i):
     headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
+                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; U; en-us) AppleWebKit/537.36 (KHTML, like Gecko) Silk/3.68 like Chrome/39.0.2171.93 Safari/E7FBAF',
                 'Accept-Language': 'en-US, en;q=0.5'
     }
     try:
@@ -70,7 +70,6 @@ def scraping(values, notebooks, url, i):
         price = site.find('span', class_='a-price-whole').text + '00'
         availability = site.find('span', class_='a-size-medium a-color-price').text
         
-        time.sleep(10)
         if 'Não disponível' in availability:
             print(f'{notebooks[i]} não disponível')
             values[i+1][1] = price
