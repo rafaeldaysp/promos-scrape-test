@@ -58,13 +58,15 @@ def criador_de_post(dados, op=0):
     teste4.send_message(post)
     
     
-
 def scraping(values, notebooks, url, i):
     ua = UserAgent()
-    headers = {'User-Agent':str(ua.chrome),
-           'Accept-Language': 'en-US, en;q=0.5',
-           'Referer': 'https://google.com',
-           'DNT': '1'}
+    headers = {
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9", 
+                "Accept-Encoding": "gzip, deflate", 
+                "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8", 
+                "Dnt": "1", 
+                "User-Agent": str(ua.chrome), 
+            }
     print(str(ua.chrome))
     try:
         response = requests.get(url[notebooks[i]], headers=headers)
