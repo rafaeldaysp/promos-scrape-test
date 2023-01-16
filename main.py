@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import os.path
 import os
 
@@ -58,21 +56,18 @@ def criador_de_post(dados, op=0):
     teste4.send_message(post)
     
     
+
 def scraping(values, notebooks, url, i):
     ua = UserAgent()
-    headers = {
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9", 
-                "Accept-Encoding": "gzip, deflate", 
-                "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8", 
-                "Dnt": "1", 
-                "User-Agent": str(ua.random), 
-            }
-    print(str(ua.random))
+    headers = {'User-Agent':str(ua.chrome),
+           'Accept-Language': 'en-US, en;q=0.5'}
     try:
-        response = requests.get(url[notebooks[i]], headers=headers)
+        payload = {'api_key': '4bcc114803511deceea0b6584008d58d', 'url': url[notebooks[i]]}
+        response = requests.get('http://api.scraperapi.com', params=payload)
+        #response = requests.get(url[notebooks[i]], headers=headers)
         site = BeautifulSoup(response.text, 'html.parser')
         price = site.find('span', class_='a-price-whole').text + '00'
-        availability = site.find('span', class_='a-color-price a-text-bold').text
+        availability = site.find('span', class_='a-size-medium a-color-price').text
         
         if 'Não disponível' in availability:
             print(f'{notebooks[i]} não disponível')
@@ -86,7 +81,7 @@ def scraping(values, notebooks, url, i):
                 preco_antigo = 0
             preco_atual = [float(a) for a in price.split(',')[:-1]][0]
             referencia = float(values[i+1][9])/1000
-        
+            
             if str(values[i+1][4]) == 'Não' and preco_atual < referencia:
                 values[i+1][1] = price
                 criador_de_post(values[i+1], 1) # volta de estoque
@@ -100,6 +95,7 @@ def scraping(values, notebooks, url, i):
             values[i+1][4] = 'Sim'
     except Exception as e:
         print('Acesso bloqueado pela Amazon em ' + notebooks[i])
+        print(e)
     return values
     
 
@@ -160,8 +156,8 @@ def main():
         except HttpError as err:
             print(err)
         
-        print('Timeout 10s...')
-        time.sleep(10)
+        print('Timeout...')
+        time.sleep(120)
         
 
 
