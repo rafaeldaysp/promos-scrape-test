@@ -62,9 +62,7 @@ def scraping(values, notebooks, url, i):
     headers = {'User-Agent':str(ua.chrome),
            'Accept-Language': 'en-US, en;q=0.5'}
     try:
-        payload = {'api_key': '4bcc114803511deceea0b6584008d58d', 'url': url[notebooks[i]]}
-        response = requests.get('http://api.scraperapi.com', params=payload)
-        #response = requests.get(url[notebooks[i]], headers=headers)
+        response = requests.get(url[notebooks[i]], headers=headers)
         site = BeautifulSoup(response.text, 'html.parser')
         price = site.find('span', class_='a-price-whole').text + '00'
         availability = site.find('span', class_='a-size-medium a-color-price').text
