@@ -28,7 +28,7 @@ import teste4
 
 #notebooks =['helios', 'strix', 'nitro_3060_r5']
 
-
+from fake_useragent import UserAgent
 
 def criador_de_post(dados, op=0):
     print('Criando o post...')
@@ -60,11 +60,9 @@ def criador_de_post(dados, op=0):
     
 
 def scraping(values, notebooks, url, i):
-    headers = {
-                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; U; en-us) AppleWebKit/537.36 (KHTML, like Gecko) Silk/3.68 like Chrome/39.0.2171.93 Safari/E7FBAF',
-                'Accept-Language': 'en-US, en;q=0.5',
-                'from': 'bboyrafinhazika@gmail.com'
-    }
+    ua = UserAgent()
+    headers = {'User-Agent':str(ua.chrome),
+           'Accept-Language': 'en-US, en;q=0.5'}
     try:
         response = requests.get(url[notebooks[i]], headers=headers)
         site = BeautifulSoup(response.text, 'html.parser')
