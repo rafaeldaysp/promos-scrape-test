@@ -72,7 +72,7 @@ def scraping(values, notebooks, url, i):
         response = requests.get(url[notebooks[i]], headers=headers)
         site = BeautifulSoup(response.text, 'html.parser')
         price = site.find('span', class_='a-price-whole').text + '00'
-        availability = site.find('span', class_='a-size-medium a-color-price').text
+        availability = site.find('span', class_='a-color-price a-text-bold').text
         
         if 'Não disponível' in availability:
             print(f'{notebooks[i]} não disponível')
