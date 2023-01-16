@@ -61,7 +61,7 @@ def criador_de_post(dados, op=0):
 
 def scraping(values, notebooks, url, i):
     headers = {
-                'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
                 'Accept-Language': 'en-US, en;q=0.5'
     }
     try:
@@ -81,20 +81,23 @@ def scraping(values, notebooks, url, i):
             except:
                 preco_antigo = 0
             preco_atual = [float(a) for a in price.split(',')[:-1]][0]
-            print(values[i+1][1])
-            if str(values[i+1][4]) == 'Não' and preco_atual < int(values[i+1][9]):
+            referencia = float(values[i+1][9])/1000
+            print(preco_antigo)
+            print(preco_atual)
+            print(referencia)
+            if str(values[i+1][4]) == 'Não' and preco_atual < referencia:
                 values[i+1][1] = price
                 criador_de_post(values[i+1], 1) # volta de estoque
-            elif preco_atual < preco_antigo < int(values[i+1][9]):
+            elif preco_atual < preco_antigo < referencia:
                 values[i+1][1] = price
                 criador_de_post(values[i+1], 2) # abaixou
-            elif preco_atual < int(values[i+1][9]) < preco_antigo:
+            elif preco_atual < referencia < preco_antigo:
                 values[i+1][1] = price
                 criador_de_post(values[i+1]) # preço bom
             values[i+1][1] = price
             values[i+1][4] = 'Sim'
     except Exception as e:
-        print('Acesso bloqueado pela Amazon em ' + notebooks[i])
+        print('Acesso bloqueado pela Amazon em ' + notebooks)
     return values
     
 
