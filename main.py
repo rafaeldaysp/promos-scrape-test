@@ -159,7 +159,7 @@ def main():
             print(err)
         
         print('Timeout 5 min...')
-        #time.sleep(300)
+        time.sleep(60)
         
 
 
