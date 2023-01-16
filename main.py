@@ -63,6 +63,7 @@ def scraping(values, notebooks, url, i):
     ua = UserAgent()
     headers = {'User-Agent':str(ua.chrome),
            'Accept-Language': 'en-US, en;q=0.5'}
+    print(str(ua.chrome))
     try:
         response = requests.get(url[notebooks[i]], headers=headers)
         site = BeautifulSoup(response.text, 'html.parser')
