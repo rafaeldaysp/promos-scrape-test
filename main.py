@@ -160,8 +160,8 @@ def main():
         except HttpError as err:
             print(err)
         
-        print('Timeout...')
-        time.sleep(1)
+        print('Timeout 10s...')
+        time.sleep(10)
         
 
 
