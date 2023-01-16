@@ -65,9 +65,9 @@ def scraping(values, notebooks, url, i):
                 "Accept-Encoding": "gzip, deflate", 
                 "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8", 
                 "Dnt": "1", 
-                "User-Agent": str(ua.chrome), 
+                "User-Agent": str(ua.random), 
             }
-    print(str(ua.chrome))
+    print(str(ua.random))
     try:
         response = requests.get(url[notebooks[i]], headers=headers)
         site = BeautifulSoup(response.text, 'html.parser')
