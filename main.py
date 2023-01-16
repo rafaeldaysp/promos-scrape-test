@@ -61,7 +61,7 @@ def criador_de_post(dados, op=0):
 
 def scraping(values, notebooks, url, i):
     headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246',
+                'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1',
                 'Accept-Language': 'en-US, en;q=0.5'
     }
     try:
