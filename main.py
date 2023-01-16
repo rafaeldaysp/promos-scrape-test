@@ -65,7 +65,7 @@ def scraping(values, notebooks, url, i):
                 "Accept-Encoding": "gzip, deflate", 
                 "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8", 
                 "Dnt": "1", 
-                "User-Agent": str(ua.chrome), 
+                "User-Agent": 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_1; en-US) AppleWebKit/532.0 (KHTML, like Gecko) Chrome/4.0.207.0 Safari/532.0', 
             }
     print(str(ua.chrome))
     try:
