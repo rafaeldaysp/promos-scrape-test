@@ -59,8 +59,7 @@ def criador_de_post(dados, op=0):
 
 def scraping(values, notebooks, url, i):
     ua = UserAgent()
-    headers = {'User-Agent':str(ua.chrome),
-           'Accept-Language': 'en-US, en;q=0.5'}
+    headers = {'upgrade-insecure-requests': '1', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Windows; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36', 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9', 'sec-ch-ua': '".Not/A)Brand";v="99", "Google Chrome";v="103", "Chromium";v="103"', 'sec-ch-ua-mobile': '?0', 'sec-ch-ua-platform': '"Windows"', 'sec-fetch-site': 'none', 'sec-fetch-mod': '', 'sec-fetch-user': '?1', 'accept-encoding': 'gzip, deflate, br', 'accept-language': 'bg-BG,bg;q=0.9,en-US;q=0.8,en;q=0.7'}
     try:
         response = requests.get(url[notebooks[i]], headers=headers)
         site = BeautifulSoup(response.text, 'html.parser')
@@ -133,26 +132,26 @@ def main():
             result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                         range=SAMPLE_RANGE_NAME).execute()
             values = result.get('values', [])
-            
-            for i in range (1, len(values)):
-                try:
-                    result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                                        range=SAMPLE_RANGE_NAME).execute()
-                    values = result.get('values', [])
-                    notebook = values[i][0]
-                    notebooks.append(notebook)
-                    url[notebook] = values[i][3]
-                    values = scraping(values, notebooks, url, i - 1)
-                    print(f'{values[i][0]}: {values[i][1]}')
-                    row = 'Notebooks Amazon!B' + str(3+i) + ':F' + str(3+i)
-                    sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                                            range=row, valueInputOption="USER_ENTERED",
-                                            body={'values': [values[i][:-5]]}).execute()
-                except Exception as e:
-                    print(e)
-            
         except HttpError as err:
             print(err)
+        for i in range (1, len(values)):
+            try:
+                result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+                                    range=SAMPLE_RANGE_NAME).execute()
+                values = result.get('values', [])
+                notebook = values[i][0]
+                notebooks.append(notebook)
+                url[notebook] = values[i][3]
+                values = scraping(values, notebooks, url, i - 1)
+                print(f'{values[i][0]}: {values[i][1]}')
+                row = 'Notebooks Amazon!B' + str(3+i) + ':F' + str(3+i)
+                sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+                                        range=row, valueInputOption="USER_ENTERED",
+                                        body={'values': [values[i][:-5]]}).execute()
+            except Exception as e:
+                print(e)
+            
+        
         
         print('Timeout...')
         time.sleep(120)
