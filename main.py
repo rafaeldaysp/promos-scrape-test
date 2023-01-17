@@ -61,39 +61,40 @@ def scraping(values, notebooks, url, i):
     ua = UserAgent()
     headers = {'User-Agent':str(ua.chrome),
            'Accept-Language': 'en-US, en;q=0.5'}
+    
+    response = requests.get(url[notebooks[i]], headers=headers)
+    site = BeautifulSoup(response.text, 'html.parser')
     try:
-        response = requests.get(url[notebooks[i]], headers=headers)
-        site = BeautifulSoup(response.text, 'html.parser')
-        price = site.find('span', class_='a-price-whole').text + '00'
-        availability = site.find('span', class_='a-size-medium a-color-price').text
+        lista_divs = site.find('div', {'class': 'a-section a-spacing-none aok-align-center'})
+        price = lista_divs.find('span', class_='a-price-whole').text + '00'
+        try:
+            preco_antigo = [float(a) for a in values[i+1][1].split(',')[:-1]][0]
+        except:
+            preco_antigo = 0
+        preco_atual = [float(a) for a in price.split(',')[:-1]][0]
+        referencia = float(values[i+1][9])/1000
         
-        if 'Não disponível' in availability:
-            print(f'{notebooks[i]} não disponível')
+        if str(values[i+1][4]) == 'Não' and preco_atual < referencia:
             values[i+1][1] = price
-            values[i+1][4] = 'Não'
-        else:
-            print(values[i+1][1])
-            try:
-                preco_antigo = [float(a) for a in values[i+1][1].split(',')[:-1]][0]
-            except:
-                preco_antigo = 0
-            preco_atual = [float(a) for a in price.split(',')[:-1]][0]
-            referencia = float(values[i+1][9])/1000
-            
-            if str(values[i+1][4]) == 'Não' and preco_atual < referencia:
-                values[i+1][1] = price
-                criador_de_post(values[i+1], 1) # volta de estoque
-            elif preco_atual < preco_antigo < referencia:
-                values[i+1][1] = price
-                criador_de_post(values[i+1], 2) # abaixou
-            elif preco_atual < referencia < preco_antigo:
-                values[i+1][1] = price
-                criador_de_post(values[i+1]) # preço bom
+            criador_de_post(values[i+1], 1) # volta de estoque
+        elif preco_atual < preco_antigo < referencia:
             values[i+1][1] = price
-            values[i+1][4] = 'Sim'
+            criador_de_post(values[i+1], 2) # abaixou
+        elif preco_atual < referencia < preco_antigo:
+            values[i+1][1] = price
+            criador_de_post(values[i+1]) # preço bom
+        values[i+1][1] = price
+        values[i+1][4] = 'Sim'
+        
     except Exception as e:
-        print('Acesso bloqueado pela Amazon em ' + notebooks[i])
-        print(e)
+        try:
+            site.find('span', class_='a-size-medium a-color-price').text
+            values[i+1][4] = 'Não'
+            values[i+1][1] = '-'
+
+        except:
+            print('Acesso bloqueado pela Amazon em ' + notebooks[i])
+
     return values
     
 
