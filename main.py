@@ -92,8 +92,9 @@ def scraping(values, notebooks, url, i):
             values[i+1][4] = 'Não'
             values[i+1][1] = '-'
 
-        except:
+        except Exception as e:
             print('Acesso bloqueado pela Amazon em ' + notebooks[i])
+            print(e)
 
     return values
     
