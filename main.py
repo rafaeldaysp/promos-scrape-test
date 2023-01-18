@@ -64,6 +64,11 @@ def scraping(values, notebooks, url, i):
            'Accept-Language': 'en-US, en;q=0.5'}
     
     response = requests.get(url[notebooks[i]], headers=headers)
+    if response.status_code != 200:
+        print('Acesso bloqueado pela Amazon em ' + notebooks[i])
+        print('Restarting program...')
+        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
+    
     site = BeautifulSoup(response.text, 'html.parser')
     try:
         lista_divs = site.find('div', {'class': 'a-section a-spacing-none aok-align-center'})
@@ -94,10 +99,8 @@ def scraping(values, notebooks, url, i):
             values[i+1][1] = '-'
 
         except Exception as f:
-            print('Acesso bloqueado pela Amazon em ' + notebooks[i])
             print(f)
-            print('Restarting program...')
-            os.execl(sys.executable, os.path.abspath(__file__), *sys.argv) 
+            
 
     return values
     
