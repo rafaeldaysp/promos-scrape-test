@@ -1,5 +1,6 @@
 import os.path
 import os
+import sys
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -92,9 +93,11 @@ def scraping(values, notebooks, url, i):
             values[i+1][4] = 'Não'
             values[i+1][1] = '-'
 
-        except Exception as e:
+        except Exception as f:
             print('Acesso bloqueado pela Amazon em ' + notebooks[i])
-            print(e)
+            print(f)
+            print('Restarting program...')
+            os.execl(sys.executable, os.path.abspath(__file__), *sys.argv) 
 
     return values
     
