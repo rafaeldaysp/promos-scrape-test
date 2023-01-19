@@ -144,6 +144,7 @@ def main():
         notebooks = []
         url = {}
         row = ''
+        values=[]
         try:
             service = build('sheets', 'v4', credentials=creds)
 
