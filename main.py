@@ -63,12 +63,24 @@ def scraping(values, notebooks, url, i):
     headers = {'User-Agent':str(ua.chrome),
            'Accept-Language': 'en-US, en;q=0.5'}
     
-    response = requests.get(url[notebooks[i]], headers=headers)
+    response = requests.get(url[notebooks[i]])
     if response.status_code != 200:
         print('Acesso bloqueado pela Amazon em ' + notebooks[i])
-        print('Restarting program...')
-        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
-    
+        response = requests.get(url[notebooks[i]])
+        print(response.status_code)
+        #print('Restarting program...')
+        #os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
+        #sys.exit()
+        headers_heroku = {
+            "Content-Type": "application/json",
+            "Accept": "application/vnd.heroku+json; version=3",
+            "Authorization": "Bearer 5442fbde-6717-4567-876e-a3f857d96e41"
+        }
+        #curl -n -X DELETE https://api.heroku.com/apps/amazon-bot-scraping/dynos   -H "Content-Type: application/json"   -H "Accept: application/vnd.heroku+json; version=3" -H "Authorization: Bearer 5442fbde-6717-4567-876e-a3f857d96e41"
+        requests.delete("https://api.heroku.com/apps/amazon-bot-scraping/dynos", headers=headers_heroku)
+        time.sleep(20)
+        
+        
     site = BeautifulSoup(response.text, 'html.parser')
     try:
         lista_divs = site.find('div', {'class': 'a-section a-spacing-none aok-align-center'})
@@ -101,7 +113,6 @@ def scraping(values, notebooks, url, i):
         except Exception as f:
             print(f)
             
-
     return values
     
 
