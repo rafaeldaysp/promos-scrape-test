@@ -63,7 +63,7 @@ def scraping(values, notebooks, url, i):
     headers = {'User-Agent':str(ua.chrome),
            'Accept-Language': 'en-US, en;q=0.5'}
     
-    response = requests.get(url[notebooks[i]])
+    response = requests.get(url[notebooks[i]], headers=headers)
     if response.status_code != 200:
         print('Acesso bloqueado pela Amazon em ' + notebooks[i])
         response = requests.get(url[notebooks[i]])
@@ -78,7 +78,7 @@ def scraping(values, notebooks, url, i):
         }
         #curl -n -X DELETE https://api.heroku.com/apps/amazon-bot-scraping/dynos   -H "Content-Type: application/json"   -H "Accept: application/vnd.heroku+json; version=3" -H "Authorization: Bearer 5442fbde-6717-4567-876e-a3f857d96e41"
         requests.delete("https://api.heroku.com/apps/amazon-bot-scraping/dynos", headers=headers_heroku)
-        time.sleep(20)
+        exit()
         
         
     site = BeautifulSoup(response.text, 'html.parser')
