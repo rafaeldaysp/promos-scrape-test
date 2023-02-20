@@ -15,12 +15,13 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SAMPLE_SPREADSHEET_ID = '1S0FRNJoXLwKUbat35EagzmCuTCFdz89OTfNVDBP1Ovk'
 SAMPLE_RANGE_NAME = 'Notebooks Amazon!B3:K60'
 
-import requests
 from bs4 import BeautifulSoup
 import time
 from requests_html import HTMLSession
+import pyppdf.patch_pyppeteer
 
 import teste4
+from subprocess import STDOUT, check_call
 
 #url = {'helios': 'https://amzn.to/3H4b3Uz',
     #    'strix': 'https://amzn.to/3QFRzZI',
@@ -141,7 +142,10 @@ def main():
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
     
-    
+    try:
+        check_call(['apt-get', 'install', '-y', 'gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxts'], stdout=open(os.devnull,'wb'), stderr=STDOUT) 
+    except:
+        pass
     while True:
         notebooks = []
         url = {}
