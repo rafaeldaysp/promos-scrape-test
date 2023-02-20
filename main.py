@@ -18,6 +18,7 @@ SAMPLE_RANGE_NAME = 'Notebooks Amazon!B3:K60'
 import requests
 from bs4 import BeautifulSoup
 import time
+from requests_html import HTMLSession
 
 import teste4
 
@@ -59,29 +60,31 @@ def criador_de_post(dados, op=0):
     
 
 def scraping(values, notebooks, url, i):
-    ua = UserAgent()
-    headers = {'User-Agent':str(ua.chrome),
-           'Accept-Language': 'en-US, en;q=0.5'}
+    # ua = UserAgent()
+    # headers = {'User-Agent':str(ua.chrome),
+    #        'Accept-Language': 'en-US, en;q=0.5'}
     
-    response = requests.get(url[notebooks[i]], headers=headers)
-    if response.status_code != 200:
-        print('Acesso bloqueado pela Amazon em ' + notebooks[i])
-        response = requests.get(url[notebooks[i]])
-        print(response.status_code)
-        #print('Restarting program...')
-        #os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
-        #sys.exit()
-        headers_heroku = {
-            "Content-Type": "application/json",
-            "Accept": "application/vnd.heroku+json; version=3",
-            "Authorization": "Bearer 5442fbde-6717-4567-876e-a3f857d96e41"
-        }
-        #curl -n -X DELETE https://api.heroku.com/apps/amazon-bot-scraping/dynos   -H "Content-Type: application/json"   -H "Accept: application/vnd.heroku+json; version=3" -H "Authorization: Bearer 5442fbde-6717-4567-876e-a3f857d96e41"
-        requests.delete("https://api.heroku.com/apps/amazon-bot-scraping/dynos", headers=headers_heroku)
-        exit()
-        
-        
-    site = BeautifulSoup(response.text, 'html.parser')
+    # response = requests.get(url[notebooks[i]], headers=headers)
+    # if response.status_code != 200:
+    #     print('Acesso bloqueado pela Amazon em ' + notebooks[i])
+    #     response = requests.get(url[notebooks[i]])
+    #     print(response.status_code)
+    #     #print('Restarting program...')
+    #     #os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
+    #     #sys.exit()
+    #     headers_heroku = {
+    #         "Content-Type": "application/json",
+    #         "Accept": "application/vnd.heroku+json; version=3",
+    #         "Authorization": "Bearer 5442fbde-6717-4567-876e-a3f857d96e41"
+    #     }
+    #     #curl -n -X DELETE https://api.heroku.com/apps/amazon-bot-scraping/dynos   -H "Content-Type: application/json"   -H "Accept: application/vnd.heroku+json; version=3" -H "Authorization: Bearer 5442fbde-6717-4567-876e-a3f857d96e41"
+    #     requests.delete("https://api.heroku.com/apps/amazon-bot-scraping/dynos", headers=headers_heroku)
+    #     exit()
+    ua = str(UserAgent().chrome)
+    session = HTMLSession(browser_args=["--no-sandbox", "--user-agent=" + ua])
+    r = session.get(url[notebooks[i]])
+    r.html.render()
+    site = BeautifulSoup(r.html.raw_html, 'html.parser')
     try:
         lista_divs = site.find('div', {'class': 'a-section a-spacing-none aok-align-center'})
         price = lista_divs.find('span', class_='a-price-whole').text + '00'
@@ -112,7 +115,6 @@ def scraping(values, notebooks, url, i):
 
         except Exception as f:
             print(f)
-            
     return values
     
 
