@@ -84,7 +84,7 @@ def scraping(values, notebooks, url, i):
     ua = str(UserAgent().chrome)
     session = HTMLSession(browser_args=["--no-sandbox", "--user-agent=" + ua])
     r = session.get(url[notebooks[i]])
-    r.html.render()
+    r.html.render(timeout=20)
     site = BeautifulSoup(r.html.raw_html, 'html.parser')
     try:
         lista_divs = site.find('div', {'class': 'a-section a-spacing-none aok-align-center'})
